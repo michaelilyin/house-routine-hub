@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - 10
+cache: npm
+install: npm ci
+script:
+  - npm run build:prod
+deploy:
+  provider: firebase
+  token: 
+    secure: '${firebase-token}'
+  on:
+    branches:
+      only:     
+        - master
+        - develop
+notifications:
+  webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
