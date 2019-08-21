@@ -2,7 +2,7 @@ const getGitInfo = require('git-repo-info');
 const {gitDescribeSync} = require('git-describe');
 const pack = require('./package.json');
 const {resolve} = require('path');
-const {writeFileSync} = require('fs-extra');
+const fs = require('fs');
 
 const git = getGitInfo();
 const gitDescribe = gitDescribeSync({
@@ -23,13 +23,19 @@ const versionInfo = {
 };
 
 const json = JSON.stringify(versionInfo, null, 2);
-const file = resolve(__dirname, 'generated/version.ts');
+const generated = resolve('generated');
+const file = resolve(generated, 'version.ts');
 const lines = [
   '/* IMPORTANT: THIS FILE IS AUTO GENERATED! DO NOT MANUALLY EDIT OR CHECKIN! */',
   '/* tslint:disable */',
   `export const version = ${json};`,
   '/* tslint:enable */',
 ];
-writeFileSync(file, lines.join('\n'), {encoding: 'utf-8'});
+
+if (!fs.existsSync(generated)){
+  fs.mkdirSync(generated);
+}
+
+fs.writeFileSync(file, lines.join('\n'), {encoding: 'utf-8'});
 
 console.info('versionInfo =', json);
