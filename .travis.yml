@@ -8,11 +8,8 @@ script:
 deploy:
   provider: firebase
   token: 
-    secure: '${firebase-token}'
+    secure: '${firebase_token}'
   on:
-    branches:
-      only:     
-        - master
-        - develop
+    branch: develop
 notifications:
   webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
