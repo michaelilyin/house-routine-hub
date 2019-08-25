@@ -4,10 +4,14 @@ node_js:
 cache: npm
 install:
   - npm ci
-  - cd functions && npm ci
+  - cd functions
+  - npm ci
+  - cd ..
 script:
   - npm run build:ssr
-  - cd functions && npm run build
+  - cd functions
+  - npm run build
+  - cd ..
 deploy:
   provider: firebase
   skip_cleanup: true

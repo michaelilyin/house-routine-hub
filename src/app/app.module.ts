@@ -1,10 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {AngularFireModule} from '@angular/fire';
-import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireAuth, AngularFireAuthModule} from '@angular/fire/auth';
+import {first} from 'rxjs/operators';
+
+export function authInitializer(authService: AngularFireAuth): () => Promise<any> {
+  return () => authService.user.pipe(first()).toPromise();
+}
 
 @NgModule({
   declarations: [
@@ -24,7 +29,14 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
     }),
     AngularFireAuthModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: authInitializer,
+      deps: [AngularFireAuth],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
