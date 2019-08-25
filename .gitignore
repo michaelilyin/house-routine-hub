@@ -47,3 +47,5 @@ testem.log
 Thumbs.db
 
 generated
+.firebase/
+**/firebase-debug.log
