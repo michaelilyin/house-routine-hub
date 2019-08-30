@@ -1,29 +1,28 @@
-import { Component } from '@angular/core';
-import {version} from '../environments/version';
-import {AngularFireAuth} from '@angular/fire/auth';
-import { auth } from 'firebase/app'
-import { tap  } from 'rxjs/operators';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {map, shareReplay} from 'rxjs/operators';
+import {AuthService} from './_core/auth/auth.service';
+import {Observable} from 'rxjs';
+import {User} from './_core/auth/user.model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  title = 'hrh';
-  version = version;
+  user$: Observable<User> = this.authService.user$.pipe(shareReplay(1));
+  authorized$: Observable<boolean> = this.user$.pipe(map(user => user != undefined));
 
-  user$ = this.authService.user.pipe(tap((auth) => console.info('auth:', auth)));
-
-  constructor(private authService: AngularFireAuth) {
+  constructor(private authService: AuthService) {
 
   }
 
-  authGoogle() {
-    this.authService.auth.signInWithPopup(new auth.GoogleAuthProvider())
+  login() {
+    this.authService.login();
   }
 
   logout() {
-    this.authService.auth.signOut();
+    this.authService.logout();
   }
 }

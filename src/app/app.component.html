@@ -1,14 +1,22 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <h2>Version info: {{ version | json }}</h2>
-</div>
-<h2>User: </h2>
-<div>{{user$ | async | json}}</div>
+<mat-toolbar>
+  <a class="title" routerLink="">House routine hub</a>
 
-<button (click)="authGoogle()">Auth Google</button>
-<button (click)="logout()">Logout</button>
+  <div class="header-spacer"></div>
 
+  <ng-container *ngIf="authorized$ | async; else loginTemplate">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <app-user-avatar [user]="user$ | async"></app-user-avatar>
+    </button>
+
+    <mat-menu #menu="matMenu" overlapTrigger="true">
+      <button mat-menu-item routerLink="profile">Profile</button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+  </ng-container>
+</mat-toolbar>
 <router-outlet></router-outlet>
+
+<ng-template #loginTemplate>
+  <button mat-button (click)="login()">Login</button>
+</ng-template>

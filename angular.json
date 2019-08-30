@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -48,6 +49,10 @@
                 {
                   "replace": "src/environments/version.ts",
                   "with": "generated/version.ts"
+                },
+                {
+                  "replace": "src/environments/firebase.ts",
+                  "with": "generated/firebase.ts"
                 }
               ],
               "optimization": true,
@@ -103,6 +108,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -167,6 +173,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "hrh"
 }
