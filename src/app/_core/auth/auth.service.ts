@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {User} from './user.model';
 import * as firebase from 'firebase/app';
+import {AngularFireAuthGuard} from '@angular/fire/auth-guard';
 
 @Injectable({
   providedIn: 'root'
