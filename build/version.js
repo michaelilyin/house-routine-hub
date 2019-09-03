@@ -1,6 +1,6 @@
 const getGitInfo = require('git-repo-info');
 const {gitDescribeSync} = require('git-describe');
-const pack = require('./package.json');
+const pack = require('../package.json');
 const {resolve} = require('path');
 const fs = require('fs');
 

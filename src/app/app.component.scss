@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header-spacer {
+  flex: 1;
+}

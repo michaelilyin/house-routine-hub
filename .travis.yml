@@ -2,13 +2,18 @@ language: node_js
 node_js:
   - "11.0"
 cache: npm
-install: npm ci
+install:
+  - npm ci
+  - cd functions
+  - npm ci
+  - cd ..
 script:
-  - npm run build:prod
+  - npm run build:ssr:prod
+  - cd functions && npm run build && cd ..
 deploy:
   provider: firebase
   skip_cleanup: true
-  token: 
+  token:
     secure: eA09NTe4pikrfIQmE5Ikgcjxgx/KhUJpPc24ksS+25WkTtf9hEjqBh5cUDB1HkYsaeVaSXWfacF/b6fWmnIgmq1xxW1zFYEJ/QoQYjgPKmvTwLJp1D+XXqNd8141opyUs84ekJeKXsVEhONupA7x1dJdQqzbe8yqNTZAg/pJAqTh+Gio3QY82fUv2x2M/SO7n1ZGmQCtjSrKO07RSj3t/cA+Lgtk0D/n12bivBj0JxKrbnxkZuS50cEN9IJF/OVSqSslqxVRCP+tVopXXXJedbsb3QzPufustcMlSzupC7injwDUPhX8iA24oBXHPzDvxi3v+KyrD++jnEEbYI54kWFBRWc95oMQ6Mciu4uab2vz9BvKkOM4Ib/F3mPxWujvLg0y75bgiO7nqWkoyjQsu2PaPiHEhHGztRwdybkRJ7Y3EYXTZB/rOXTnrlr6lUuxY/ZT+RURi9Xx7AWyMZD7a4+blMd4ys/tlsBUdCcdVAg5o/5E4fkZu7ZqqoOxWT2jKf+ztohX1uOcyOL2kESuCb6EVFJP3gphYtzLwxPWt48cLdVcsJ7/RpffM1a3yuq0uDCs6pos9kbliTtloq5jMG2EBmQeTEjRh7KERUJLJpbuWAbGDynBb6LSFbbW6jiIhGq+c3i/tH2Aant4K1IYkxhCEubV/EbK1BSbwozKaHA=
   on:
     branch: develop
