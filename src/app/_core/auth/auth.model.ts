@@ -1,4 +1,4 @@
-export interface User {
+export interface Authorization {
   displayName: string | null | undefined;
   email: string | null | undefined;
   phoneNumber: string | null | undefined;

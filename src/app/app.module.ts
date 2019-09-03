@@ -13,6 +13,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {ProfileModule} from './_features/profile/profile.module';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatTableModule} from '@angular/material/table';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 
 @NgModule({
@@ -24,13 +26,15 @@ import {MatDividerModule} from '@angular/material/divider';
     AppRoutingModule,
     AngularFireModule.initializeApp(firebase),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     CoreModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
     ProfileModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTableModule
   ],
   providers: [
 
