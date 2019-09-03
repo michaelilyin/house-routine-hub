@@ -1,10 +1,9 @@
-import {AngularFireAuth} from '@angular/fire/auth';
 import {first} from 'rxjs/operators';
 import {APP_INITIALIZER, PLATFORM_ID, Provider} from '@angular/core';
 import {AuthService} from './auth.service';
-import {Authorization} from './auth.model';
+import {User} from '../../_features/users/_models/user.model';
 
-export function authInitializer(authService: AuthService, platform: Object): () => Promise<Authorization> {
+export function authInitializer(authService: AuthService, platform: Object): () => Promise<User> {
   return () => {
     return authService.user$.pipe(first()).toPromise();
   }
