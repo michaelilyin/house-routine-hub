@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Application info</h1>
+<mat-dialog-content>
+  <div>
+    <span>Version:&nbsp;</span>
+    <span>{{version.version}}</span>
+  </div>
+  <div>
+    <span>Repository:&nbsp;</span>
+    <a [href]="version.repo">{{version.repo}}</a>
+  </div>
+  <div>
+    <span>Build time:&nbsp;</span>
+    <span>{{version.time | date:'short'}}</span>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>OK</button>
+</mat-dialog-actions>
