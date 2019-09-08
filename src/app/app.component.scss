@@ -1,7 +1,12 @@
 :host {
+  min-height: 100%;
+  min-width: 100%;
   display: flex;
-  height: 100%;
   flex-direction: column;
+}
+
+.drawer {
+  flex: 1;
 }
 
 .title {
@@ -17,6 +22,13 @@
   position: sticky;
   top: 0;
   z-index: 500;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  min-width: 100%;
 }
 
 .spinner {
