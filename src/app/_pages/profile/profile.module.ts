@@ -5,6 +5,7 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileComponent } from './profile.component';
 import {ComponentsModule} from '../../_components/components.module';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     CommonModule,
     ProfileRoutingModule,
     ComponentsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    FormsModule
   ]
 })
-export class ProfileModule { }
+export class ProfilePagesModule { }

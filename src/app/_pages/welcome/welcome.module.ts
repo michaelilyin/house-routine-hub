@@ -12,4 +12,4 @@ import { WelcomeComponent } from './welcome.component';
     WelcomeRoutingModule
   ]
 })
-export class WelcomeModule { }
+export class WelcomePagesModule { }

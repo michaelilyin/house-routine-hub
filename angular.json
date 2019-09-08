@@ -162,6 +162,10 @@
                 {
                   "replace": "src/environments/version.ts",
                   "with": "generated/version.ts"
+                },
+                {
+                  "replace": "src/environments/firebase.ts",
+                  "with": "generated/firebase.ts"
                 }
               ],
               "sourceMap": false,

@@ -1,4 +1,4 @@
-<mat-select>
+<mat-select #select="matSelect">
   <mat-option *ngFor="let food of foods" [value]="food.value">
     {{food.viewValue}}
   </mat-option>

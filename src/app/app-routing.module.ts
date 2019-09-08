@@ -11,7 +11,7 @@ const routes: Routes = [
       WelcomeGuard
     ],
     runGuardsAndResolvers: 'always',
-    loadChildren: () => import('./_pages/welcome/welcome.module').then(m => m.WelcomeModule)
+    loadChildren: () => import('./_pages/welcome/welcome.module').then(m => m.WelcomePagesModule)
   }, {
     path: '',
     canActivate: [
@@ -21,10 +21,10 @@ const routes: Routes = [
     children: [
       {
         path: 'profile',
-        loadChildren: () => import('./_pages/profile/profile.module').then(m => m.ProfileModule)
+        loadChildren: () => import('./_pages/profile/profile.module').then(m => m.ProfilePagesModule)
       }, {
         path: 'house',
-        loadChildren: () => import('./_pages/house/house.module').then(m => m.HouseModule)
+        loadChildren: () => import('./_pages/house/house.module').then(m => m.HousePagesModule)
       }
     ]
   }

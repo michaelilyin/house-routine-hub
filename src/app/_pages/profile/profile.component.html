@@ -2,5 +2,9 @@
 
 <mat-form-field>
   <mat-label>Some ref</mat-label>
-  <app-ref-select></app-ref-select>
+  <app-ref-select [(ngModel)]="value"></app-ref-select>
 </mat-form-field>
+
+<div>
+  {{value|json}}
+</div>
