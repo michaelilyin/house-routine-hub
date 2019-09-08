@@ -4,11 +4,9 @@ node_js:
 cache: npm
 install:
   - npm ci
-  - cd functions
-  - npm ci
-  - cd ..
+  - cd functions && npm ci && cd ..
 script:
-  - npm run build:ssr:prod
+  - npm run build:ssr
   - cd functions && npm run build && cd ..
 deploy:
   provider: firebase

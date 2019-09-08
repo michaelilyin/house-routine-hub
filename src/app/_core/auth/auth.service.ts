@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {Observable, of} from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import {map, shareReplay, switchMap} from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import {User} from '../../_features/users/_models/user.model';
 import {UsersService} from '../../_features/users/_services/users.service';
-import {fromPromise} from 'rxjs/internal-compatibility';
 
 @Injectable({
   providedIn: 'root'
@@ -27,10 +26,10 @@ export class AuthService {
   }
 
   login(): Observable<firebase.auth.UserCredential> {
-    return fromPromise(this.firebaseAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()));
+    return from(this.firebaseAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()));
   }
 
   logout(): Observable<void> {
-    return fromPromise(this.firebaseAuth.auth.signOut());
+    return from(this.firebaseAuth.auth.signOut());
   }
 }

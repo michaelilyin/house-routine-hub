@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notice-card {
+  max-width: 560px;
+}
+
+.notice-text {
+  display: flex;
+  justify-content: center;
+}
