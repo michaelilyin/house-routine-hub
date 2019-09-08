@@ -4,6 +4,8 @@ import {AuthService} from './_core/auth/auth.service';
 import {Observable} from 'rxjs';
 import {User} from './_features/users/_models/user.model';
 import {Router} from '@angular/router';
+import {MatDialog} from '@angular/material';
+import {VersionInfoDialogComponent} from './_core/version/version-info-dialog/version-info-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +23,8 @@ export class AppComponent {
   );
 
   constructor(private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private dialog: MatDialog) {
   }
 
   login() {
@@ -44,5 +47,9 @@ export class AppComponent {
     ).subscribe(() => {
       this.router.navigate(['.'])
     });
+  }
+
+  showVersion() {
+    this.dialog.open(VersionInfoDialogComponent);
   }
 }

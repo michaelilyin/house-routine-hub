@@ -1,6 +1,10 @@
 <mat-toolbar class="main-toolbar" color="primary">
   <a class="title" routerLink="">House routine hub</a>
 
+  <button mat-icon-button (click)="showVersion()">
+    <mat-icon>info</mat-icon>
+  </button>
+
   <div class="header-spacer"></div>
 
   <ng-container *ngIf="authComputed$ | async">
