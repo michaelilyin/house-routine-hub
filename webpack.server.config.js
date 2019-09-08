@@ -9,29 +9,34 @@ module.exports = {
     // This is our Express server for Dynamic universal
     server: './server.ts'
   },
-  externals: {
-    './dist/server/main': './server/main'
-  },
+  externals: [
+    {
+      './dist/server/main': './server/main'
+    },
+    /^firebase/,
+    /^grpc/
+  ],
   target: 'node',
-  resolve: { extensions: ['.ts', '.js'] },
+  resolve: {extensions: ['.ts', '.js']},
   optimization: {
     minimize: false
   },
   output: {
     // Puts the output at the root of the dist folder
     path: path.join(__dirname, 'dist'),
+    library: 'app',
     filename: '[name].js',
     libraryTarget: 'umd'
   },
   module: {
     noParse: /polyfills-.*\.js/,
     rules: [
-      { test: /\.ts$/, loader: 'ts-loader' },
+      {test: /\.ts$/, loader: 'ts-loader'},
       {
         // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
         // Removing this will cause deprecation warnings to appear.
         test: /(\\|\/)@angular(\\|\/)core(\\|\/).+\.js$/,
-        parser: { system: true },
+        parser: {system: true},
       },
     ]
   },

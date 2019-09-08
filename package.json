@@ -18,7 +18,12 @@
     "compile:server": "webpack --config webpack.server.config.js --progress --colors",
     "serve:ssr": "node dist/server",
     "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
-    "build:client-and-server-bundles": "npm run firebase && npm run version && ng build --prod && ng run hrh:server:production --bundleDependencies all"
+    "build:client-and-server-bundles": "npm run firebase && npm run version && ng build --prod && ng run hrh:server:production",
+    "build:ssr:dev": "npm run build:client-and-server-bundles:dev && npm run compile:server",
+    "build:client-and-server-bundles:dev": "npm run firebase && npm run version && ng build && ng run hrh:server",
+    "build:functions": "cd functions && npm run build && cd ..",
+    "build:firebase": "npm run build:ssr && npm run build:functions",
+    "build:firebase:dev": "npm run build:ssr:dev && npm run build:functions"
   },
   "private": true,
   "dependencies": {

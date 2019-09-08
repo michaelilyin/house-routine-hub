@@ -15,6 +15,7 @@ import {ProfileModule} from './_features/profile/profile.module';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTableModule} from '@angular/material/table';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {MatProgressSpinnerModule} from '@angular/material';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
     MatButtonModule,
     ProfileModule,
     MatDividerModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressSpinnerModule
   ],
   providers: [
 

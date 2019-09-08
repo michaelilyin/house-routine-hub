@@ -1,7 +1,18 @@
-import {ChangeDetectionStrategy, Component, forwardRef, OnInit, Optional} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl} from '@angular/forms';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Subject} from 'rxjs';
+import {MatSelect} from '@angular/material';
 
 @Component({
   selector: 'app-ref-select',
@@ -10,15 +21,20 @@ import {BehaviorSubject, Observable} from 'rxjs';
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => RefSelectComponent)
-    }, {
+      useExisting: forwardRef(() => RefSelectComponent),
+      multi: true
+    },
+    {
       provide: MatFormFieldControl,
       useExisting: forwardRef(() => RefSelectComponent)
     }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RefSelectComponent<T> extends MatFormFieldControl<T> implements OnInit, ControlValueAccessor {
+export class RefSelectComponent<T> extends MatFormFieldControl<T> implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor {
+
+  @ViewChild("select", {read: MatSelect, static: true})
+  public select: MatSelect;
 
   foods = [
     {value: 'steak-0', viewValue: 'Steak'},
@@ -26,37 +42,51 @@ export class RefSelectComponent<T> extends MatFormFieldControl<T> implements OnI
     {value: 'tacos-2', viewValue: 'Tacos'}
   ];
 
-  constructor(@Optional() private _ngControl: NgControl) {
+  readonly stateChanges: Subject<void> = new Subject();
+
+  constructor() {
     super();
   }
 
   ngOnInit() {
   }
 
-  writeValue(obj: any): void {
+  ngAfterViewInit(): void {
+    this.select.stateChanges.subscribe(this.stateChanges);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.stateChanges.next();
+  }
+
+  ngOnDestroy(): void {
+    this.stateChanges.complete();
+  }
+
+  writeValue(obj: T): void {
+    this.select.writeValue(obj);
   }
 
   registerOnChange(fn: any): void {
+    this.select.registerOnChange(fn);
   }
 
   registerOnTouched(fn: any): void {
+    this.select.registerOnTouched(fn);
   }
 
   setDisabledState(isDisabled: boolean): void {
+    this.select.setDisabledState(isDisabled);
   }
 
   readonly autofilled: boolean;
   readonly controlType: string;
 
   onContainerClick(event: MouseEvent): void {
+    this.select.onContainerClick()
   }
 
   setDescribedByIds(ids: string[]): void {
-  }
-
-  readonly stateChanges: Observable<void> = new BehaviorSubject(null);
-
-  get ngControl(): NgControl | null {
-    return this._ngControl;
+    this.select.setDescribedByIds(ids);
   }
 }

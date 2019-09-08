@@ -8,6 +8,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
+  value: any;
+
   constructor() { }
 
   ngOnInit() {

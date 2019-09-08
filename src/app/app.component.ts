@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {filter, first, map, shareReplay, switchMap} from 'rxjs/operators';
+import {filter, first, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
 import {AuthService} from './_core/auth/auth.service';
 import {Observable} from 'rxjs';
 import {User} from './_features/users/_models/user.model';
@@ -14,6 +14,11 @@ import {Router} from '@angular/router';
 export class AppComponent {
   user$: Observable<User> = this.authService.user$.pipe(shareReplay(1));
   authorized$: Observable<boolean> = this.user$.pipe(map(user => user != undefined));
+  authComputed$: Observable<boolean> = this.authorized$.pipe(
+    mapTo(true),
+    startWith(false),
+    shareReplay(1)
+  );
 
   constructor(private authService: AuthService,
               private router: Router) {

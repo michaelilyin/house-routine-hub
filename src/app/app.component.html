@@ -3,21 +3,31 @@
 
   <div class="header-spacer"></div>
 
-  <ng-container *ngIf="authorized$ | async; else loginTemplate">
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <app-user-avatar [user]="user$ | async"></app-user-avatar>
-    </button>
+  <ng-container *ngIf="authComputed$ | async">
+    <ng-container *ngIf="authorized$ | async; else loginTemplate">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <app-user-avatar [user]="user$ | async"></app-user-avatar>
+      </button>
 
-    <mat-menu #menu="matMenu" overlapTrigger="true">
-      <button mat-menu-item routerLink="profile">Profile</button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">Logout</button>
-    </mat-menu>
+      <mat-menu #menu="matMenu" overlapTrigger="true">
+        <button mat-menu-item routerLink="profile">Profile</button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+    </ng-container>
   </ng-container>
 </mat-toolbar>
 
-<router-outlet></router-outlet>
+<ng-container *ngIf="authComputed$ | async; else spinner">
+  <router-outlet></router-outlet>
+</ng-container>
 
 <ng-template #loginTemplate>
   <button mat-button (click)="login()">Login</button>
+</ng-template>
+
+<ng-template #spinner>
+  <div class="spinner">
+    <mat-spinner mode="indeterminate"></mat-spinner>
+  </div>
 </ng-template>

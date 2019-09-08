@@ -1,5 +1,6 @@
 :host {
   display: flex;
+  height: 100%;
   flex-direction: column;
 }
 
@@ -16,4 +17,11 @@
   position: sticky;
   top: 0;
   z-index: 500;
+}
+
+.spinner {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
