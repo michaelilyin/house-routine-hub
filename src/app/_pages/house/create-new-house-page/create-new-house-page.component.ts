@@ -11,7 +11,7 @@ import {Location} from '@angular/common';
 })
 export class CreateNewHousePageComponent implements OnInit {
 
-  private formGroup: FormGroup;
+  formGroup: FormGroup;
 
   constructor(private fb: FormBuilder,
               private houseService: HouseService,
