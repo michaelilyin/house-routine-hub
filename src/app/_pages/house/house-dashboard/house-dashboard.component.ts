@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {House} from '../_models/house';
+import {House} from '../../../_features/house/_models/house.model';
 
 @Component({
   selector: 'app-house-dashboard',

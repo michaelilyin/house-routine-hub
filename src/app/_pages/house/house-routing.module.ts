@@ -15,6 +15,7 @@ const routes: Routes = [
     resolve: {
       houses: UserHousesResolver
     },
+    runGuardsAndResolvers: 'always',
     children: [
       {
         path: 'new',

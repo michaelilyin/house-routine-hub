@@ -17,7 +17,7 @@ export class AppComponent {
   user$: Observable<User> = this.authService.user$.pipe(shareReplay(1));
   authorized$: Observable<boolean> = this.user$.pipe(map(user => user != undefined));
   authComputed$: Observable<boolean> = this.authorized$.pipe(
-    mapTo(false),
+    mapTo(true),
     startWith(false),
     shareReplay(1)
   );

@@ -1,39 +1,39 @@
+<mat-toolbar class="main-toolbar" color="primary">
+  <button mat-icon-button (click)="drawer.toggle(true)">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a class="title" routerLink="">House routine hub</a>
+
+  <button mat-icon-button (click)="showVersion()">
+    <mat-icon>info</mat-icon>
+  </button>
+
+  <div class="header-spacer"></div>
+
+  <ng-container *ngIf="authComputed$ | async">
+    <ng-container *ngIf="authorized$ | async; else loginTemplate">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <app-user-avatar [user]="user$ | async"></app-user-avatar>
+      </button>
+
+      <mat-menu #menu="matMenu" overlapTrigger="true">
+        <button mat-menu-item routerLink="profile">Profile</button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+    </ng-container>
+  </ng-container>
+</mat-toolbar>
+
 <mat-drawer-container class="drawer" [autosize]="true">
   <mat-drawer #drawer mode="over">
     I'm a drawer
   </mat-drawer>
 
   <mat-drawer-content class="content">
-    <mat-toolbar class="main-toolbar" color="primary">
-      <button mat-icon-button (click)="drawer.toggle(true)">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <a class="title" routerLink="">House routine hub</a>
-
-      <button mat-icon-button (click)="showVersion()">
-        <mat-icon>info</mat-icon>
-      </button>
-
-      <div class="header-spacer"></div>
-
-      <ng-container *ngIf="authComputed$ | async">
-        <ng-container *ngIf="authorized$ | async; else loginTemplate">
-          <button mat-icon-button [matMenuTriggerFor]="menu">
-            <app-user-avatar [user]="user$ | async"></app-user-avatar>
-          </button>
-
-          <mat-menu #menu="matMenu" overlapTrigger="true">
-            <button mat-menu-item routerLink="profile">Profile</button>
-            <mat-divider></mat-divider>
-            <button mat-menu-item (click)="logout()">Logout</button>
-          </mat-menu>
-        </ng-container>
-      </ng-container>
-    </mat-toolbar>
-
-      <ng-container *ngIf="authComputed$ | async; else spinner">
-        <router-outlet></router-outlet>
-      </ng-container>
+    <ng-container *ngIf="authComputed$ | async; else spinner">
+      <router-outlet></router-outlet>
+    </ng-container>
   </mat-drawer-content>
 </mat-drawer-container>
 
