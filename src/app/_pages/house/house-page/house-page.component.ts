@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from 'rxjs';
-import {House} from '../_models/house';
 import {map, shareReplay} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
+import {House} from '../../../_features/house/_models/house.model';
 
 @Component({
   selector: 'app-house-page',

@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {House} from './_models/house';
 import {map, shareReplay} from 'rxjs/operators';
+import {House} from '../../_features/house/_models/house.model';
 
 @Component({
   selector: 'app-house',

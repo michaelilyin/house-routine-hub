@@ -1,4 +1,7 @@
 <mat-toolbar class="main-toolbar" color="primary">
+  <button mat-icon-button (click)="drawer.toggle(true)">
+    <mat-icon>menu</mat-icon>
+  </button>
   <a class="title" routerLink="">House routine hub</a>
 
   <button mat-icon-button (click)="showVersion()">
@@ -22,9 +25,17 @@
   </ng-container>
 </mat-toolbar>
 
-<ng-container *ngIf="authComputed$ | async; else spinner">
-  <router-outlet></router-outlet>
-</ng-container>
+<mat-drawer-container class="drawer" [autosize]="true">
+  <mat-drawer #drawer mode="over">
+    I'm a drawer
+  </mat-drawer>
+
+  <mat-drawer-content class="content">
+    <ng-container *ngIf="authComputed$ | async; else spinner">
+      <router-outlet></router-outlet>
+    </ng-container>
+  </mat-drawer-content>
+</mat-drawer-container>
 
 <ng-template #loginTemplate>
   <button mat-button (click)="login()">Login</button>
