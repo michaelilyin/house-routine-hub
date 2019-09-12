@@ -29,12 +29,14 @@ const routes: Routes = [
             resolve: {
               house: PrimaryHouseResolver
             },
+            runGuardsAndResolvers: 'always',
             component: PrimaryHousePageComponent
           }, {
             path: ':id',
             resolve: {
               house: HouseResolver
             },
+            runGuardsAndResolvers: 'always',
             component: HousePageComponent
           }
         ]
