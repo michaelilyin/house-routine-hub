@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {combineLatest, Observable, zip} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {House} from '../../../_features/house/_models/house.model';
+import {HouseService} from '../../../_features/house/_services/house.service';
 
 @Component({
   selector: 'app-primary-house-page',
@@ -34,10 +35,21 @@ export class PrimaryHousePageComponent implements OnInit {
     })
   );
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private houseService: HouseService) {
   }
 
   ngOnInit() {
   }
 
+  setPrimaryHouse(suggest: House) {
+    this.houseService.savePrimaryHouseSettings({
+      houseUid: suggest.uid
+    }).subscribe(() => {
+      this.router.navigate(['.'], {
+        relativeTo: this.route
+      })
+    })
+  }
 }

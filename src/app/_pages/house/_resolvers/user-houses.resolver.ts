@@ -11,6 +11,6 @@ export class UserHousesResolver implements Resolve<House[]> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<House[]> | Promise<House[]> | House[] {
-    return this.housesService.getCurrentUserHouses().pipe(first());
+    return this.housesService.observeCurrentUserHouses().pipe(first());
   }
 }
