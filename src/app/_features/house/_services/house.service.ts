@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HouseModule} from '../house.module';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Observable, of, throwError} from 'rxjs';
-import {House} from '../_models/house.model';
+import {House, HouseInfra, PrimaryHouseSettings} from '../_models/house.model';
 import {AuthService} from '../../../_core/auth/auth.service';
 import {first, switchMap} from 'rxjs/operators';
 
@@ -15,17 +15,38 @@ export class HouseService {
               private authService: AuthService) {
   }
 
-  getCurrentUserHouses(): Observable<House[]> {
+  observeCurrentUserHouses(): Observable<House[]> {
     return this.authService.user$.pipe(
       switchMap(user => {
         if (user == undefined) {
           return of([]);
         }
-        return this.firestore.collection<House>('houses', ref => {
+        return this.firestore.collection<HouseInfra>('houses', ref => {
           return ref.where('_users', 'array-contains', user.uid)
         }).valueChanges()
       })
     )
+  }
+
+  observeCurrentUserPrimaryHouse(): Observable<House> {
+    return this.authService.user$.pipe(
+      switchMap(user => {
+        if (user == undefined) {
+          return throwError("Unauthorized");
+        }
+        return this.firestore.doc<PrimaryHouseSettings>(`users/${user.uid}/settings/primary`).valueChanges();
+      }),
+      switchMap(userHouse => {
+        if (userHouse == undefined || userHouse.houseUid == undefined) {
+          return of(undefined);
+        }
+        return this.observeHouse(userHouse.houseUid);
+      })
+    );
+  }
+
+  observeHouse(uid: string): Observable<House> {
+    return this.firestore.doc<HouseInfra>(`houses/${uid}`).valueChanges();
   }
 
   createHouse(house: House): Observable<void> {
@@ -35,11 +56,28 @@ export class HouseService {
         if (user == undefined) {
           return throwError("Unauthorized");
         }
-        house._admins = [user.uid];
-        house._users = [user.uid];
-        house.uid = this.firestore.createId();
+        const uid = this.firestore.createId();
+        const model: HouseInfra = {
+          ...house,
+          uid,
+          _admins: [user.uid],
+          _users: [user.uid]
+        };
 
-        return this.firestore.doc(`houses/${house.uid}`).set(house);
+        return this.firestore.doc(`houses/${house.uid}`).set(model);
+      })
+    );
+  }
+
+  savePrimaryHouseSettings(settings: PrimaryHouseSettings): Observable<void> {
+    return this.authService.user$.pipe(
+      first(),
+      switchMap(user => {
+        if (user == undefined) {
+          return throwError("Unauthorized");
+        }
+
+        return this.firestore.doc(`users/${user.uid}/settings/primary`).set(settings);
       })
     );
   }

@@ -11,7 +11,7 @@
       <p>Select primary house and see house dashboard here!</p>
     </mat-card-content>
     <mat-card-actions class="notice-text" *ngIf="primarySuggest$ | async as suggest">
-      <button mat-button color="primary">Set "{{suggest.name}}" as my primary house</button>
+      <button mat-button color="primary" (click)="setPrimaryHouse(suggest)">Set "{{suggest.name}}" as my primary house</button>
     </mat-card-actions>
   </mat-card>
 </ng-template>
