@@ -64,7 +64,7 @@ export class HouseService {
           _users: [user.uid]
         };
 
-        return this.firestore.doc(`houses/${house.uid}`).set(model);
+        return this.firestore.doc(`houses/${uid}`).set(model);
       })
     );
   }

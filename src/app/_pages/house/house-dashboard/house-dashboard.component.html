@@ -1,1 +1,8 @@
-<p>house-dashboard works!</p>
+<ng-container *ngIf="house != undefined">
+  <mat-card>
+    <mat-card-title>{{house.name}} house summary</mat-card-title>
+    <mat-card-content class="notice-text">
+      <p>Short info TODO</p>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
