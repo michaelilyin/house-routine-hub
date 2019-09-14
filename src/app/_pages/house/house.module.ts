@@ -16,10 +16,12 @@ import {MatInputModule} from '@angular/material/input';
 import {HouseResolver} from './_resolvers/house.resolver';
 import {PrimaryHouseResolver} from './_resolvers/primary-house.resolver';
 import {UserHousesResolver} from './_resolvers/user-houses.resolver';
+import {InformationCardModule} from '../../_components/information-card/information-card.module';
+import { HouseSettingsComponent } from './house-settings/house-settings.component';
 
 
 @NgModule({
-  declarations: [HouseComponent, PrimaryHousePageComponent, HousePageComponent, HouseDashboardComponent, CreateNewHousePageComponent],
+  declarations: [HouseComponent, PrimaryHousePageComponent, HousePageComponent, HouseDashboardComponent, CreateNewHousePageComponent, HouseSettingsComponent],
   imports: [
     CommonModule,
     HouseRoutingModule,
@@ -28,7 +30,8 @@ import {UserHousesResolver} from './_resolvers/user-houses.resolver';
     MatButtonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    InformationCardModule
   ],
   providers: [
     HouseResolver,

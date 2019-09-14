@@ -7,6 +7,8 @@
 .title {
   text-decoration: none;
   color: inherit;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .header-spacer {
@@ -36,4 +38,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.menu-toggle {
+  //margin-left: -12px;
+}
+
+.menu-icon {
+  margin-right: 8px;
 }

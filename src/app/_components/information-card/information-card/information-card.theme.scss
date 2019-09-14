@@ -1,0 +1,41 @@
+@import '~@angular/material/theming';
+
+@mixin information-card-color-scheme($color) {
+  .mat-card-header {
+    background-color: $color;
+    margin-left: -16px;
+    margin-right: -16px;
+    margin-top: -16px;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+    padding: 12px 12px 0;
+  }
+
+  .mat-card-content {
+    margin-top: 16px;
+  }
+
+  [mat-card-image]+.mat-card-content {
+    margin-top: 0;
+  }
+}
+
+@mixin information-card-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  app-information-card {
+    &.primary {
+      @include information-card-color-scheme(mat-color($primary));
+    }
+
+    &.accent {
+      @include information-card-color-scheme(mat-color($accent));
+    }
+
+    &.warn {
+      @include information-card-color-scheme(mat-color($warn));
+    }
+  }
+}

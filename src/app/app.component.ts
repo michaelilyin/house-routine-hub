@@ -1,11 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {filter, first, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
+import {map, shareReplay} from 'rxjs/operators';
 import {AuthService} from './_core/auth/auth.service';
-import {Observable} from 'rxjs';
-import {User} from './_features/users/_models/user.model';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material';
 import {VersionInfoDialogComponent} from './_core/version/version-info-dialog/version-info-dialog.component';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {IS_MOBILE} from './_shared/breakpoints/values';
 
 @Component({
   selector: 'app-root',
@@ -14,39 +14,17 @@ import {VersionInfoDialogComponent} from './_core/version/version-info-dialog/ve
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  user$: Observable<User> = this.authService.user$.pipe(shareReplay(1));
-  authorized$: Observable<boolean> = this.user$.pipe(map(user => user != undefined));
-  authComputed$: Observable<boolean> = this.authorized$.pipe(
-    mapTo(true),
-    startWith(false),
+  readonly auhResolved$ = this.authService.resolved$;
+
+  readonly showMenu$ = this.breakpointObserver.observe(IS_MOBILE).pipe(
+    map(state => state.matches),
     shareReplay(1)
   );
 
-  constructor(private authService: AuthService,
-              private router: Router,
-              private dialog: MatDialog) {
-  }
-
-  login() {
-    this.authService.login().pipe(
-      switchMap(() => this.authorized$.pipe(
-        filter(authorized => authorized),
-        first()
-      ))
-    ).subscribe(() => {
-      this.router.navigate(['.'])
-    });
-  }
-
-  logout() {
-    this.authService.logout().pipe(
-      switchMap(() => this.authorized$.pipe(
-        filter(authorized => !authorized),
-        first()
-      ))
-    ).subscribe(() => {
-      this.router.navigate(['.'])
-    });
+  constructor(private readonly authService: AuthService,
+              private readonly router: Router,
+              private readonly dialog: MatDialog,
+              private readonly breakpointObserver: BreakpointObserver) {
   }
 
   showVersion() {

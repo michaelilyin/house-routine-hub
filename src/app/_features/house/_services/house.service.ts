@@ -4,7 +4,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Observable, of, throwError} from 'rxjs';
 import {House, HouseInfra, PrimaryHouseSettings} from '../_models/house.model';
 import {AuthService} from '../../../_core/auth/auth.service';
-import {first, switchMap} from 'rxjs/operators';
+import {first, switchMap, withLatestFrom} from 'rxjs/operators';
 
 @Injectable({
   providedIn: HouseModule
@@ -78,6 +78,33 @@ export class HouseService {
         }
 
         return this.firestore.doc(`users/${user.uid}/settings/primary`).set(settings);
+      })
+    );
+  }
+
+  // TODO: transaction
+  deleteHouse(uid: string): Observable<void> {
+    return this.authService.user$.pipe(
+      first(),
+      switchMap(user => {
+        if (user == undefined) {
+          return throwError("Unauthorized");
+        }
+
+        let settingsDoc = this.firestore.doc<PrimaryHouseSettings>(`users/${user.uid}/settings/primary`);
+        return settingsDoc.valueChanges().pipe(
+          first(),
+          switchMap(settings => {
+            if (settings != undefined && settings.houseUid === uid) {
+              return settingsDoc.update({
+                houseUid: null
+              })
+            }
+          })
+        );
+      }),
+      switchMap(() => {
+        return this.firestore.doc(`houses/${uid}`).delete();
       })
     );
   }
