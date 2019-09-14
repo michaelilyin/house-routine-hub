@@ -1,45 +1,40 @@
 <mat-toolbar class="main-toolbar" color="primary">
-  <button mat-icon-button (click)="drawer.toggle(true)">
+  <button *ngIf="showMenu$ | async"
+          class="menu-toggle"
+          mat-icon-button (click)="drawer.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <a class="title" routerLink="">House routine hub</a>
 
-  <button mat-icon-button (click)="showVersion()">
-    <mat-icon>info</mat-icon>
-  </button>
+  <ng-container *ngIf="!(showMenu$ | async)">
+    <button mat-icon-button (click)="showVersion()">
+      <mat-icon>info</mat-icon>
+    </button>
+  </ng-container>
 
   <div class="header-spacer"></div>
 
-  <ng-container *ngIf="authComputed$ | async">
-    <ng-container *ngIf="authorized$ | async; else loginTemplate">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <app-user-avatar [user]="user$ | async"></app-user-avatar>
-      </button>
-
-      <mat-menu #menu="matMenu" overlapTrigger="true">
-        <button mat-menu-item routerLink="profile">Profile</button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item (click)="logout()">Logout</button>
-      </mat-menu>
-    </ng-container>
+  <ng-container *ngIf="auhResolved$ | async">
+    <app-user-menu></app-user-menu>
   </ng-container>
 </mat-toolbar>
 
 <mat-drawer-container class="drawer" [autosize]="true">
   <mat-drawer #drawer mode="over">
-    I'm a drawer
+    <mat-nav-list>
+      <mat-list-item>
+        <mat-icon class="menu-icon">info</mat-icon>
+        <a (click)="showVersion()">Info</a>
+      </mat-list-item>
+    </mat-nav-list>
   </mat-drawer>
 
   <mat-drawer-content class="content">
-    <ng-container *ngIf="authComputed$ | async; else spinner">
+    <ng-container *ngIf="auhResolved$ | async; else spinner">
       <router-outlet></router-outlet>
     </ng-container>
   </mat-drawer-content>
 </mat-drawer-container>
-
-<ng-template #loginTemplate>
-  <button mat-button (click)="login()">Login</button>
-</ng-template>
 
 <ng-template #spinner>
   <div class="spinner">

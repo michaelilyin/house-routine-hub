@@ -1,8 +1,31 @@
 <ng-container *ngIf="house != undefined">
-  <mat-card>
-    <mat-card-title>{{house.name}} house summary</mat-card-title>
+  <app-information-card color="primary" class="card">
+    <mat-card-header>
+      <mat-card-title>{{house.name}} house summary</mat-card-title>
+    </mat-card-header>
     <mat-card-content class="notice-text">
       <p>Short info TODO</p>
     </mat-card-content>
-  </mat-card>
+    <mat-card-actions>
+      <a mat-button [routerLink]="[house.uid, 'settings']">Settings</a>
+    </mat-card-actions>
+  </app-information-card>
+
+  <app-information-card class="card">
+    <mat-card-header>
+      <mat-card-title>Shopping agenda</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="notice-text">
+      <p>Shopping info TODO</p>
+    </mat-card-content>
+  </app-information-card>
+
+  <app-information-card color="accent" class="card">
+    <mat-card-header>
+      <mat-card-title>Today routines</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="notice-text">
+      <p>Today routines TODO</p>
+    </mat-card-content>
+  </app-information-card>
 </ng-container>

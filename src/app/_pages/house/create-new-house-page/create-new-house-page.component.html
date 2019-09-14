@@ -1,8 +1,18 @@
 <form [formGroup]="formGroup" (ngSubmit)="create(formGroup.value)">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput formControlName="name">
-  </mat-form-field>
+  <app-information-card color="primary">
+    <mat-card-header>
+      <mat-card-title>New house creation</mat-card-title>
+    </mat-card-header>
 
-  <button [disabled]="formGroup.invalid" mat-button type="submit">Create</button>
+    <mat-card-content class="house-form">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button [disabled]="formGroup.invalid" mat-button type="submit">Create</button>
+    </mat-card-actions>
+  </app-information-card>
 </form>

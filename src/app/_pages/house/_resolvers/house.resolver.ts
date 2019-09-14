@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {House} from '../../../_features/house/_models/house.model';
 import {HouseService} from '../../../_features/house/_services/house.service';
+import {first} from 'rxjs/operators';
 
 @Injectable()
 export class HouseResolver implements Resolve <House | undefined> {
@@ -11,6 +12,6 @@ export class HouseResolver implements Resolve <House | undefined> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<House | undefined> | Promise<House | undefined> | House | undefined {
     const houseId = route.paramMap.get('id');
-    return this.housesService.observeHouse(houseId);
+    return this.housesService.observeHouse(houseId).pipe(first());
   }
 }

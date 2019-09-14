@@ -8,6 +8,7 @@ import {PrimaryHousePageComponent} from './primary-house-page/primary-house-page
 import {HousePageComponent} from './house-page/house-page.component';
 import {HouseResolver} from './_resolvers/house.resolver';
 import {CreateNewHousePageComponent} from './create-new-house-page/create-new-house-page.component';
+import {HouseSettingsComponent} from './house-settings/house-settings.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
       {
         path: 'new',
         component: CreateNewHousePageComponent
-      }, {
+      },
+      {
         path: '',
         component: HouseComponent,
         children: [
@@ -31,13 +33,23 @@ const routes: Routes = [
             },
             runGuardsAndResolvers: 'always',
             component: PrimaryHousePageComponent
-          }, {
+          },
+          {
             path: ':id',
             resolve: {
               house: HouseResolver
             },
             runGuardsAndResolvers: 'always',
-            component: HousePageComponent
+            children: [
+              {
+                path: '',
+                component: HousePageComponent
+              },
+              {
+                path: 'settings',
+                component: HouseSettingsComponent
+              }
+            ]
           }
         ]
       }
