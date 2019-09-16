@@ -26,6 +26,7 @@ export class AuthService {
     shareReplay(1)
   );
 
+  // TODO: resolved false when login/logout
   public readonly resolved$: Observable<boolean> = this.authorized$.pipe(
     first(),
     mapTo(true),

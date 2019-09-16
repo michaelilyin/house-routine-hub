@@ -16,6 +16,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatTableModule} from '@angular/material/table';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {MatIconModule, MatListModule, MatProgressSpinnerModule, MatSidenavModule} from '@angular/material';
+import {LockerModule} from './_components/locker/locker.module';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {MatIconModule, MatListModule, MatProgressSpinnerModule, MatSidenavModule
     MatProgressSpinnerModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    LockerModule
   ],
   providers: [
 
