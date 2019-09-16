@@ -1,3 +1,5 @@
+<app-locker></app-locker>
+
 <mat-toolbar class="main-toolbar" color="primary">
   <button *ngIf="showMenu$ | async"
           class="menu-toggle"
@@ -30,14 +32,6 @@
   </mat-drawer>
 
   <mat-drawer-content class="content">
-    <ng-container *ngIf="auhResolved$ | async; else spinner">
-      <router-outlet></router-outlet>
-    </ng-container>
+    <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>
-
-<ng-template #spinner>
-  <div class="spinner">
-    <mat-spinner mode="indeterminate"></mat-spinner>
-  </div>
-</ng-template>
