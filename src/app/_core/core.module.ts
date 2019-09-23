@@ -7,6 +7,7 @@ import { UserMenuComponent } from './user-menu/user-menu.component';
 import {ProfileModule} from '../_features/profile/profile.module';
 import {RouterModule} from '@angular/router';
 import {EXCEPTION_HANDLER_PROVIDER} from './exception-handler/exception-handler';
+import { AUTH_INITIALIZER } from './auth/auth.service';
 
 
 
@@ -26,7 +27,8 @@ import {EXCEPTION_HANDLER_PROVIDER} from './exception-handler/exception-handler'
     RouterModule
   ],
   providers: [
-    EXCEPTION_HANDLER_PROVIDER
+    EXCEPTION_HANDLER_PROVIDER,
+    AUTH_INITIALIZER
   ],
   exports: [
     UserMenuComponent

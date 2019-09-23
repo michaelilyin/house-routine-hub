@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {APP_INITIALIZER, Injectable, Provider} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {from, Observable, of} from 'rxjs';
 import {filter, first, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
@@ -57,3 +57,14 @@ export class AuthService {
     );
   }
 }
+
+export function authInitializer(service: AuthService): () => Promise<boolean> {
+  return () => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise();
+}
+
+export const AUTH_INITIALIZER: Provider = {
+  provide: APP_INITIALIZER,
+  useFactory: authInitializer,
+  deps: [AuthService],
+  multi: true
+};

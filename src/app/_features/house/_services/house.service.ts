@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HouseModule} from '../house.module';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {Observable, of, throwError} from 'rxjs';
+import {from, Observable, of, throwError} from 'rxjs';
 import {House, HouseInfra, PrimaryHouseSettings} from '../_models/house.model';
 import {AuthService} from '../../../_core/auth/auth.service';
-import {first, switchMap, withLatestFrom} from 'rxjs/operators';
+import {first, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import * as firebase from 'firebase/app';
+import QuerySnapshot = firebase.firestore.QuerySnapshot;
 
 @Injectable({
   providedIn: HouseModule
@@ -23,7 +25,10 @@ export class HouseService {
         }
         return this.firestore.collection<HouseInfra>('houses', ref => {
           return ref.where('_users', 'array-contains', user.uid)
-        }).valueChanges()
+        }).get({source: 'server'})
+      }),
+      map((query: QuerySnapshot) => {
+        return query.docs.map(doc => doc.data() as House)
       })
     )
   }
@@ -82,29 +87,36 @@ export class HouseService {
     );
   }
 
-  // TODO: transaction
   deleteHouse(uid: string): Observable<void> {
-    return this.authService.user$.pipe(
+    return from(
+      this.firestore.firestore.runTransaction(tx => {
+        return this.deleteHouseInTx(uid, tx).toPromise();
+      })
+    );
+  }
+
+  private deleteHouseInTx(uid: string, tx: firebase.firestore.Transaction): Observable<void> {
+    const settingsDoc$ = this.authService.user$.pipe(
       first(),
       switchMap(user => {
         if (user == undefined) {
           return throwError("Unauthorized");
         }
 
-        let settingsDoc = this.firestore.doc<PrimaryHouseSettings>(`users/${user.uid}/settings/primary`);
-        return settingsDoc.valueChanges().pipe(
-          first(),
-          switchMap(settings => {
-            if (settings != undefined && settings.houseUid === uid) {
-              return settingsDoc.update({
-                houseUid: null
-              })
-            }
-          })
-        );
-      }),
-      switchMap(() => {
-        return this.firestore.doc(`houses/${uid}`).delete();
+        const settingsDoc = this.firestore.doc<PrimaryHouseSettings>(`users/${user.uid}/settings/primary`);
+        return settingsDoc.get()
+      })
+    );
+
+    return settingsDoc$.pipe(
+      map(settings => {
+        if (settings.exists && settings.data().houseUid === uid) {
+          tx.update(settings.ref, {
+            houseUid: null
+          });
+        }
+        const houseDoc = this.firestore.doc(`houses/${uid}`);
+        tx.delete(houseDoc.ref);
       })
     );
   }

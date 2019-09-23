@@ -4,6 +4,7 @@ import {map, shareReplay} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {House} from '../../../_features/house/_models/house.model';
 import {HouseService} from '../../../_features/house/_services/house.service';
+import {LockerService} from '../../../_components/locker/locker.service';
 
 @Component({
   selector: 'app-primary-house-page',
