@@ -60,7 +60,7 @@ export class AuthService {
 
 export function authInitializer(service: AuthService): () => Promise<boolean> {
   return () => {
-    return service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    return service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       .then(() => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise());
   }
 }
