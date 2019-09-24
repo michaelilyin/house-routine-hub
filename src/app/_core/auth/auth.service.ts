@@ -71,6 +71,6 @@ export function authInitializer(service: AuthService, platform: Object): () => P
 export const AUTH_INITIALIZER: Provider = {
   provide: APP_INITIALIZER,
   useFactory: authInitializer,
-  deps: [AuthService, new Inject(PLATFORM_ID)],
+  deps: [AuthService, PLATFORM_ID],
   multi: true
 };
