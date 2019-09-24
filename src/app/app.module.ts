@@ -1,4 +1,4 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, BrowserTransferStateModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -25,6 +25,7 @@ import {LockerModule} from './_components/locker/locker.module';
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
+    BrowserTransferStateModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(firebase),
     AngularFireAuthModule,
