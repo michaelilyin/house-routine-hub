@@ -34,7 +34,7 @@ export class AuthService {
     shareReplay(1)
   );
 
-  constructor(private firebaseAuth: AngularFireAuth,
+  constructor(public readonly firebaseAuth: AngularFireAuth,
               private usersService: UsersService) {
   }
 
@@ -59,7 +59,10 @@ export class AuthService {
 }
 
 export function authInitializer(service: AuthService): () => Promise<boolean> {
-  return () => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise();
+  return () => {
+    return service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(() => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise());
+  }
 }
 
 export const AUTH_INITIALIZER: Provider = {
