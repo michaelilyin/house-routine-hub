@@ -1,10 +1,11 @@
-import {APP_INITIALIZER, Injectable, Provider} from '@angular/core';
+import {APP_INITIALIZER, Injectable, Provider, Inject, PLATFORM_ID} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {from, Observable, of} from 'rxjs';
 import {filter, first, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import {User} from '../../_features/users/_models/user.model';
 import {UsersService} from '../../_features/users/_services/users.service';
+import {isPlatformServer} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -58,16 +59,18 @@ export class AuthService {
   }
 }
 
-export function authInitializer(service: AuthService): () => Promise<boolean> {
+export function authInitializer(service: AuthService, platform: Object): () => Promise<boolean> {
   return () => {
-    return service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(() => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise());
+    const persistence = isPlatformServer(platform)
+      ? service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
+      : service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    return persistence.then(() => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise());
   }
 }
 
 export const AUTH_INITIALIZER: Provider = {
   provide: APP_INITIALIZER,
   useFactory: authInitializer,
-  deps: [AuthService],
+  deps: [AuthService, new Inject(PLATFORM_ID)],
   multi: true
 };
