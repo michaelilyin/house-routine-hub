@@ -1,16 +1,17 @@
-import {APP_INITIALIZER, Injectable, Provider, Inject, PLATFORM_ID} from '@angular/core';
+import {APP_INITIALIZER, Injectable, Provider, Inject, PLATFORM_ID, OnDestroy} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {from, Observable, of} from 'rxjs';
+import {from, Observable, of, Subscription} from 'rxjs';
 import {filter, first, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import {User} from '../../_features/users/_models/user.model';
 import {UsersService} from '../../_features/users/_services/users.service';
 import {isPlatformServer} from '@angular/common';
+import {CookieService} from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
 
   public readonly user$: Observable<User | undefined> = this.firebaseAuth.user.pipe(
     switchMap(auth => {
@@ -35,8 +36,29 @@ export class AuthService {
     shareReplay(1)
   );
 
+  private tokenSub = Subscription.EMPTY;
+
   constructor(public readonly firebaseAuth: AngularFireAuth,
-              private usersService: UsersService) {
+              private usersService: UsersService,
+              private cookieService: CookieService) {
+    this.tokenSub = this.firebaseAuth.user.pipe(
+      switchMap(auth => {
+        if (auth == undefined) {
+          return undefined;
+        }
+        return auth.getIdToken();
+      })
+    ).subscribe(token => {
+      if (token) {
+        this.cookieService.set("_token", token);
+      } else {
+        this.cookieService.delete("_token");
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.tokenSub.unsubscribe();
   }
 
   login(): Observable<boolean> {
@@ -59,18 +81,26 @@ export class AuthService {
   }
 }
 
-export function authInitializer(service: AuthService, platform: Object): () => Promise<boolean> {
+export function authInitializer(service: AuthService, platform: Object, cookieService: CookieService): () => Promise<boolean> {
   return () => {
-    const persistence = isPlatformServer(platform)
+    let pipeline = isPlatformServer(platform)
       ? service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
       : service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-    return persistence.then(() => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise());
+    if (isPlatformServer(platform)) {
+      console.info('Is server, try to auth');
+      if (cookieService.check("_token")) {
+        console.info('Has cookie, authenticate with it');
+        const token = cookieService.get("_token");
+        pipeline.then(() => service.firebaseAuth.auth.signInWithCustomToken(token));
+      }
+    }
+    return pipeline.then(() => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise());
   }
 }
 
 export const AUTH_INITIALIZER: Provider = {
   provide: APP_INITIALIZER,
   useFactory: authInitializer,
-  deps: [AuthService, PLATFORM_ID],
+  deps: [AuthService, PLATFORM_ID, CookieService],
   multi: true
 };
