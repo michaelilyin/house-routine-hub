@@ -44,13 +44,9 @@ export class AuthService implements OnDestroy {
     this.tokenSub = this.firebaseAuth.user.pipe(
       switchMap(auth => {
         if (auth == undefined) {
-          return undefined;
+          return of(undefined);
         }
-        const token$ = auth.getIdToken();
-        if (token$ != undefined) {
-          return token$;
-        }
-        return of(undefined);
+        return auth.getIdToken();
       })
     ).subscribe(token => {
       if (token) {
