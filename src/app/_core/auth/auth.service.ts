@@ -46,7 +46,11 @@ export class AuthService implements OnDestroy {
         if (auth == undefined) {
           return undefined;
         }
-        return auth.getIdToken();
+        const token$ = auth.getIdToken();
+        if (token$ != undefined) {
+          return token$;
+        }
+        return of(undefined);
       })
     ).subscribe(token => {
       if (token) {
