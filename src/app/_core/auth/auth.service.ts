@@ -87,7 +87,7 @@ export class AuthService implements OnDestroy {
 
 export function authInitializer(service: AuthService, platform: Object, cookieService: CookieService): () => Promise<boolean> {
   return () => {
-    let pipeline = isPlatformServer(platform)
+    let pipeline: Promise<any> = isPlatformServer(platform)
       ? service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
       : service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     if (isPlatformServer(platform)) {
@@ -95,7 +95,9 @@ export function authInitializer(service: AuthService, platform: Object, cookieSe
       if (cookieService.check("_token")) {
         console.info('Has cookie, authenticate with it');
         const token = cookieService.get("_token");
-        pipeline.then(() => service.firebaseAuth.auth.signInWithCustomToken(token));
+        pipeline = pipeline.then(() => service.firebaseAuth.auth.signInWithCustomToken(token));
+      } else {
+        console.info('Cookie not exists');
       }
     }
     return pipeline.then(() => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise());
