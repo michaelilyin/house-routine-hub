@@ -8,6 +8,7 @@ import {ProfileModule} from '../_features/profile/profile.module';
 import {RouterModule} from '@angular/router';
 import {EXCEPTION_HANDLER_PROVIDER} from './exception-handler/exception-handler';
 import { AUTH_INITIALIZER } from './auth/auth.service';
+import {CookieService} from 'ngx-cookie-service';
 
 
 
@@ -28,7 +29,8 @@ import { AUTH_INITIALIZER } from './auth/auth.service';
   ],
   providers: [
     EXCEPTION_HANDLER_PROVIDER,
-    AUTH_INITIALIZER
+    AUTH_INITIALIZER,
+    CookieService
   ],
   exports: [
     UserMenuComponent
