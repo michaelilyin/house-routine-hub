@@ -50,9 +50,9 @@ export class AuthService implements OnDestroy {
       })
     ).subscribe(token => {
       if (token) {
-        this.cookieService.set("_token", token);
+        this.cookieService.set("__session", token);
       } else {
-        this.cookieService.delete("_token");
+        this.cookieService.delete("__session");
       }
     });
   }
@@ -88,9 +88,9 @@ export function authInitializer(service: AuthService, platform: Object, cookieSe
       : service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     if (isPlatformServer(platform)) {
       console.info('Is server, try to auth');
-      if (cookieService.check("_token")) {
+      if (cookieService.check("__session")) {
         console.info('Has cookie, authenticate with it');
-        const token = cookieService.get("_token");
+        const token = cookieService.get("__session");
         pipeline = pipeline.then(() => service.firebaseAuth.auth.signInWithCustomToken(token));
       } else {
         console.info('Cookie not exists');

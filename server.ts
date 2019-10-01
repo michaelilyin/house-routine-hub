@@ -53,7 +53,6 @@ app.get('*', (req, res) => {
   console.info(req.header('cookie'));
   console.info(req.cookies);
   console.info(req.signedCookies);
-  res.setHeader('Cache-Control', 'private');
   res.render('index', { req });
 });
 
