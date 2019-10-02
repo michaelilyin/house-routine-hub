@@ -53,7 +53,14 @@ app.get('*', (req, res) => {
   console.info(req.header('cookie'));
   console.info(req.cookies);
   console.info(req.signedCookies);
-  res.render('index', { req });
+  res.render('index', {
+    req: req,
+    providers: [
+      {
+        provide: 'REQUEST', useValue: (req)
+      }
+    ]
+  });
 });
 
 export {
