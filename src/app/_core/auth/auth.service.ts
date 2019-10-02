@@ -82,8 +82,11 @@ export class AuthService implements OnDestroy {
 }
 
 export function authInitializer(service: AuthService, platform: Object, injector: Injector): () => Promise<boolean> {
-  function parseToken(cookie: string): string | undefined {
-    return 'test';
+  function parseToken(cookie: string | undefined): string | undefined {
+    if (!cookie) return undefined;
+    const match = /_session=(.*)/.exec(cookie);
+    if (!match) return undefined;
+    return match[1];
   }
 
   return () => {

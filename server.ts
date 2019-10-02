@@ -48,11 +48,6 @@ app.get('*.*', express.static(DIST_FOLDER, {
 
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {
-  console.info(req.headers);
-  console.info(req.get('cookie'));
-  console.info(req.header('cookie'));
-  console.info(req.cookies);
-  console.info(req.signedCookies);
   res.render('index', {
     req: req,
     providers: [
