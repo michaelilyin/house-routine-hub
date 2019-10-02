@@ -48,6 +48,7 @@ app.get('*.*', express.static(DIST_FOLDER, {
 
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {
+  res.setHeader('Cache-Control', 'private');
   res.render('index', {
     req: req,
     providers: [

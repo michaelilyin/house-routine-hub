@@ -93,18 +93,18 @@ export function authInitializer(service: AuthService, platform: Object, injector
     let pipeline: Promise<any> = isPlatformServer(platform)
       ? service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
       : service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-    if (isPlatformServer(platform)) {
-      console.info('Is server, try to auth');
-      const req = injector.get('REQUEST');
-      const cookie = req.get('cookie');
-      if (cookie) {
-        console.info('Has cookie, authenticate with it');
-        const token = parseToken(cookie);
-        pipeline = pipeline.then(() => service.firebaseAuth.auth.signInWithCustomToken(token));
-      } else {
-        console.info('Cookie not exists');
-      }
-    }
+    // if (isPlatformServer(platform)) {
+    //   console.info('Is server, try to auth');
+      // const req = injector.get('REQUEST');
+      // const cookie = req.get('cookie');
+      // if (cookie) {
+      //   console.info('Has cookie, authenticate with it');
+      //   const token = parseToken(cookie);
+      //   pipeline = pipeline.then(() => service.firebaseAuth.auth.signInWithCustomToken(token));
+      // } else {
+      //   console.info('Cookie not exists');
+      // }
+    // }
     return pipeline.then(() => service.resolved$.pipe(filter(resolved => resolved === true)).toPromise());
   }
 }
