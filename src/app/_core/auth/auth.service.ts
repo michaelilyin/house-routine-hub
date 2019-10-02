@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, Injectable, Provider, Inject, PLATFORM_ID, OnDestroy, Optional} from '@angular/core';
+import {APP_INITIALIZER, Injectable, Provider, Inject, PLATFORM_ID, OnDestroy, Optional, Injector} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {from, Observable, of, Subscription} from 'rxjs';
 import {filter, first, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
@@ -81,7 +81,7 @@ export class AuthService implements OnDestroy {
   }
 }
 
-export function authInitializer(service: AuthService, platform: Object, req: any): () => Promise<boolean> {
+export function authInitializer(service: AuthService, platform: Object, injector: Injector): () => Promise<boolean> {
   function parseToken(cookie: string): string | undefined {
     return 'test';
   }
@@ -92,6 +92,7 @@ export function authInitializer(service: AuthService, platform: Object, req: any
       : service.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     if (isPlatformServer(platform)) {
       console.info('Is server, try to auth');
+      const req = injector.get('REQUEST');
       const cookie = req.get('cookie');
       if (cookie) {
         console.info('Has cookie, authenticate with it');
@@ -108,6 +109,6 @@ export function authInitializer(service: AuthService, platform: Object, req: any
 export const AUTH_INITIALIZER: Provider = {
   provide: APP_INITIALIZER,
   useFactory: authInitializer,
-  deps: [AuthService, PLATFORM_ID, [new Optional(), 'REQUEST']],
+  deps: [AuthService, PLATFORM_ID, Injector],
   multi: true
 };
